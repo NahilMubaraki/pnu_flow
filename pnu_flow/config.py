@@ -13,14 +13,15 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 
+_CONFIG_DIR = Path(__file__).resolve().parent
+
 @dataclass
 class PathsConfig:
-    root_dir: Path = Path(__file__).resolve().parent
-    artifacts_dir: Path = field(default_factory=lambda: Path(__file__).resolve().parent / "artifacts")
-    models_dir:    Path = field(default_factory=lambda: Path(__file__).resolve().parent / "artifacts" / "models")
-    scalers_dir:   Path = field(default_factory=lambda: Path(__file__).resolve().parent / "artifacts" / "scalers")
-    data_dir:      Path = field(default_factory=lambda: Path(__file__).resolve().parent / "artifacts" / "data")
-
+    root_dir:      Path = _CONFIG_DIR
+    artifacts_dir: Path = _CONFIG_DIR / "artifacts"
+    models_dir:    Path = _CONFIG_DIR / "artifacts" / "models"
+    scalers_dir:   Path = _CONFIG_DIR / "artifacts" / "scalers"
+    data_dir:      Path = _CONFIG_DIR / "artifacts" / "data"
 
 @dataclass
 class SimulationConfig:
