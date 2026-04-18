@@ -1,7 +1,3 @@
-current_dir = Path(__file__).resolve().parent
-sys.path.append(str(current_dir))
-sys.path.append(str(current_dir / "pnu_flow"))
-
 import sys
 import os
 from pathlib import Path
@@ -10,10 +6,13 @@ import datetime
 import pickle
 
 # PATH CONFIGURATION
-# Ensure the server recognizes the current directory and its subfolders
 current_dir = Path(__file__).resolve().parent
 if str(current_dir) not in sys.path:
     sys.path.insert(0, str(current_dir))
+
+# Extra insurance for your specific folder structure on GitHub
+sys.path.append(str(current_dir))
+sys.path.append(str(current_dir / "pnu_flow"))
 
 # IMPORT PIPELINE
 # Load the core logic and configuration
