@@ -11,11 +11,10 @@ root_dir = current_dir.parent
 if str(root_dir) not in sys.path:
     sys.path.insert(0, str(root_dir))
 
-# IMPORT PIPELINE 
-try:
-    from pnu_flow.pipelines.inference_pipeline import query_route
-except ModuleNotFoundError:
-    from pipelines.inference_pipeline import query_route
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from pipelines.inference_pipeline import query_route
 
 # HELPER FUNCTIONS 
 def format_name(name):

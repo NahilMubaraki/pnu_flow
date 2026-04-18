@@ -12,11 +12,11 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
-from pnu_flow.config import MODEL_CFG, PATHS, SIM_CFG
-from pnu_flow.data.feature_engineering import FeatureBuilder
-from pnu_flow.models.graph_builder import build_ccis_graph
-from pnu_flow.models.lstm_model import load_model, predict_with_confidence
-from pnu_flow.models.path_optimizer import HybridPathOptimizer, find_study_spot
+from config import MODEL_CFG, PATHS, SIM_CFG
+from data.feature_engineering import FeatureBuilder
+from models.graph_builder import build_ccis_graph
+from models.lstm_model import load_model, predict_with_confidence
+from models.path_optimizer import HybridPathOptimizer, find_study_spot
 
 
 # ─────────────────────────────────────────────────────────────────────────────
