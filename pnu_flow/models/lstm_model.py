@@ -11,8 +11,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
-from pnu_flow.config import MODEL_CFG
-
+from config import MODEL_CFG
 
 class OccupancyLSTM(nn.Module):
     """

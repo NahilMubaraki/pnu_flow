@@ -9,8 +9,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 import networkx as nx
 import numpy as np
-from pnu_flow.config import MODEL_CFG, SIM_CFG
-
+from config import MODEL_CFG, SIM_CFG
 
 @dataclass
 class HybridPathOptimizer:

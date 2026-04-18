@@ -10,8 +10,7 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-from pnu_flow.config import MODEL_CFG
-
+from config import MODEL_CFG
 
 @dataclass
 class FeatureBuilder:
