@@ -5,43 +5,45 @@ import streamlit as st
 import datetime
 import pickle
 
-# PATH CONFIGURATION 
-current_dir = Path(__file__).resolve().parent 
-root_dir = current_dir.parent 
-if str(root_dir) not in sys.path:
-    sys.path.insert(0, str(root_dir))
+# PATH CONFIGURATION
+# Ensure the server recognizes the current directory and its subfolders
+current_dir = Path(__file__).resolve().parent
+if str(current_dir) not in sys.path:
+    sys.path.insert(0, str(current_dir))
 
+# IMPORT PIPELINE
+# Load the core logic and configuration
+try:
+    from pipelines.inference_pipeline import query_route
+    from config import PATHS
+except ImportError as e:
+    st.error(f"Module loading error: {e}")
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from pipelines.inference_pipeline import query_route
-
-# HELPER FUNCTIONS 
+# HELPER FUNCTIONS
 def format_name(name):
-
     if not name:
         return name
     return name.replace('_', ' ').title()
 
-# UI CONFIGURATION 
-st.set_page_config(page_title="PNU-Flow Navigation", layout="wide")
-st.title("PNU-Flow: Intelligent Indoor Navigation")
-st.markdown("---")
+# UI CONFIGURATION
+st.set_page_config(page_title="PNU-Flow Navigation", layout="wide", page_icon="📍")
+st.title(" PNU-Flow: Intelligent Indoor Navigation")
+st.markdown("")
 
-# SIDEBAR SETTINGS 
+# SIDEBAR SETTINGS
 st.sidebar.header("Navigation Settings")
 
 # Load zone mapping for dropdowns
 try:
-    from pnu_flow.config import PATHS
-    with open(PATHS.artifacts_dir / "zone_mapping.pkl", "rb") as f:
+    # Use path from config to access the zone mapping artifact
+    mapping_path = PATHS.artifacts_dir / "zone_mapping.pkl"
+    with open(mapping_path, "rb") as f:
         zone_map_data = pickle.load(f)
     zones = sorted(list(zone_map_data.keys())) 
 except Exception:
-    # Fallback if mapping file is missing
-    zones = ["main_entrance", "cafeteria", "corridor_A_G"] 
+    # Fallback zones if mapping file is missing
+    zones = ["main_entrance", "cafeteria", "corridor_A_G", "library", "lab_1"] 
 
-# Select boxes with format_func for better readability
 source = st.sidebar.selectbox(
     "Select Start Point:", 
     zones, 
@@ -55,11 +57,11 @@ destination = st.sidebar.selectbox(
     format_func=format_name
 )
 
-# --- MAIN NAVIGATION LOGIC ---
+# MAIN NAVIGATION LOGIC
 if st.sidebar.button("Find Best Route"):
     with st.spinner('Calculating the optimal path using LSTM predictions...'):
         try:
-            # Query the inference pipeline
+            # Execute inference pipeline
             result = query_route(source, destination)
             
             # Display metrics
@@ -74,22 +76,22 @@ if st.sidebar.button("Find Best Route"):
             path_visual = " → ".join(clean_path)
             st.success(path_visual)
 
-            # Optimization notes
-            if result['used_shortest_path_fallback']:
+            # Optimization indicators
+            if result.get('used_shortest_path_fallback'):
                 st.warning(" Note: Using standard shortest path due to low model confidence.")
             else:
-                st.info("Route optimized based on current occupancy (Quiet Route).")
+                st.info(" Route optimized based on current occupancy (Quiet Route).")
 
-            st.markdown("---")
+            st.markdown("")
             
-            # STUDY SPOT SECTION 
-            st.subheader("Suggested Study Spot")
+            # STUDY SPOT SECTION
+            st.subheader(" Suggested Study Spot")
             study = result.get('study_spot')
             
             if isinstance(study, dict) and 'zone' in study:
                 occ = study.get('occupancy_pct', 0) * 100
                 display_zone = format_name(study['zone'])
-                st.write(f"The best place to study right now is **{display_zone}** with an occupancy of **{occ:.1f}%**.")
+                st.write(f"The best place to study right now is **{display_zone}** with an estimated occupancy of **{occ:.1f}%**.")
             elif isinstance(study, str):
                 st.write(format_name(study))
             else:
@@ -98,8 +100,8 @@ if st.sidebar.button("Find Best Route"):
         except Exception as e:
             st.error(f"Error during inference: {e}")
 
-# SYSTEM MONITORING 
-st.sidebar.markdown("---")
+# SYSTEM MONITORING
+st.sidebar.markdown("")
 st.sidebar.subheader("System Health")
-st.sidebar.write(" LSTM Model: Loaded")
-st.sidebar.write(" Graph Engine: Active")
+st.sidebar.write("LSTM Model: Loaded")
+st.sidebar.write("Graph Engine: Active")
