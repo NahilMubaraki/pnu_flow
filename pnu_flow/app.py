@@ -10,7 +10,7 @@ current_dir = Path(__file__).resolve().parent
 if str(current_dir) not in sys.path:
     sys.path.insert(0, str(current_dir))
 
-# Extra insurance for your specific folder structure on GitHub
+# Extra insurance for the specific folder structure on GitHub
 sys.path.append(str(current_dir))
 sys.path.append(str(current_dir / "pnu_flow"))
 
@@ -29,8 +29,8 @@ def format_name(name):
     return name.replace('_', ' ').title()
 
 # UI CONFIGURATION
-st.set_page_config(page_title="PNU-Flow Navigation", layout="wide", page_icon="")
-st.title(" PNU-Flow: Intelligent Indoor Navigation")
+st.set_page_config(page_title="PNU-Flow Navigation", layout="wide")
+st.title("PNU-Flow: Intelligent Indoor Navigation")
 st.markdown("")
 
 # SIDEBAR SETTINGS
@@ -81,14 +81,14 @@ if st.sidebar.button("Find Best Route"):
 
             # Optimization indicators
             if result.get('used_shortest_path_fallback'):
-                st.warning(" Note: Using standard shortest path due to low model confidence.")
+                st.warning("Note: Using standard shortest path due to low model confidence.")
             else:
-                st.info(" Route optimized based on current occupancy (Quiet Route).")
+                st.info("Route optimized based on current occupancy (Quiet Route).")
 
             st.markdown("")
             
             # STUDY SPOT SECTION
-            st.subheader(" Suggested Study Spot")
+            st.subheader("Suggested Study Spot")
             study = result.get('study_spot')
             
             if isinstance(study, dict) and 'zone' in study:
