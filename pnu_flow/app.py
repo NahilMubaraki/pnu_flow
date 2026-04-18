@@ -60,6 +60,27 @@ if st.sidebar.button("Find Best Route"):
             st.subheader("Recommended Path")
             clean_path = [format_name(step) for step in result['path']]
             st.success(" → ".join(clean_path))
+            # --- NEW FEATURE: Route Congestion Details (Heatmap) ---
+            with st.expander("🔍 View Route Congestion Details"):
+                st.caption("Real-time occupancy predictions along your path:")
+                for step in result['path']:
+                    # Get the occupancy prediction from the LSTM model
+                    occ_val = result['occupancy_predictions'].get(step, 0.0)
+                    occ_pct = occ_val * 100
+                    
+                    # Determine the status icon based on congestion levels
+                    if occ_pct < 5.0:
+                        status_icon = "🟢" # Very quiet
+                    elif occ_pct < 15.0:
+                        status_icon = "🟡" # Moderate traffic
+                    else:
+                        status_icon = "🔴" # Heavy traffic
+                        
+                    # Display the zone name and its occupancy percentage
+                    st.write(f"{status_icon} **{format_name(step)}** — {occ_pct:.1f}%")
+                    # Render a progress bar for a quick visual cue
+                    st.progress(float(min(occ_val, 1.0)))
+            # -------------------------------------------------------
 
             if result.get('used_shortest_path_fallback'):
                 st.warning("Note: Using standard shortest path due to low model confidence.")
