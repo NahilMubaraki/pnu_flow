@@ -18,15 +18,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 try:
     from pipelines.inference_pipeline import query_route
     from config import PATHS
-except ImportError:
-    # Fallback for nested folder structures
-    try:
-        from pnu_flow.pipelines.inference_pipeline import query_route
-        from pnu_flow.config import PATHS
-    except ImportError as e:
-        st.error(f"Module loading error: {e}")
-
-# HELPER FUNCTIONS
+except ImportError as e:
+    st.error(f"Module loading error: {e}")
+    st.stop()
 def format_name(name):
     if not name:
         return name
