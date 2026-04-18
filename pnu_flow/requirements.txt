@@ -3,4 +3,4 @@ pandas
 numpy
 networkx
 scikit-learn
-torch==2.0.1+cpu
+torch
