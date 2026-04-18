@@ -1,3 +1,7 @@
+current_dir = Path(__file__).resolve().parent
+sys.path.append(str(current_dir))
+sys.path.append(str(current_dir / "pnu_flow"))
+
 import sys
 import os
 from pathlib import Path
@@ -26,7 +30,7 @@ def format_name(name):
     return name.replace('_', ' ').title()
 
 # UI CONFIGURATION
-st.set_page_config(page_title="PNU-Flow Navigation", layout="wide", page_icon="📍")
+st.set_page_config(page_title="PNU-Flow Navigation", layout="wide", page_icon="")
 st.title(" PNU-Flow: Intelligent Indoor Navigation")
 st.markdown("")
 
